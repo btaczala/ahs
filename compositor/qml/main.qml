@@ -15,10 +15,6 @@ WaylandCompositor {
     Screen {
         id: waylandScreen
         compositor: comp
-        //onNewWindowRectCreated : {
-            //console.log("onNewWindowRectCreated: rect = " + rect);
-            //globalShellSurface = null;
-        //}
     }
 
     Component {

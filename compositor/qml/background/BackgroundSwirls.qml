@@ -97,10 +97,11 @@ Item {
     ParticleSystem{
         id: particles
     }
+
     ImageParticle{
         anchors.fill: parent
         system: particles
-        source: "particle.png"
+        source: "qrc://images/particle.png"
         alpha: 0
         colorVariation: 0.3
     }

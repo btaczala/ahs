@@ -1,0 +1,16 @@
+{
+    "applications": [
+        {
+            "name": "Clock example application", 
+            "exec": "clocks", 
+            "dir": "/home/bata/qt5-examples/quick/demos/clocks", 
+            "icon": "/usr/share/doc/qt/examples/quick/demos/clocks/doc/images/qtquick-demo-clocks-small.png"
+        },
+        {
+            "name": "Photo surface",
+            "exec": "photosurface", 
+            "dir": "/home/bata/qt5-examples/quick/demos/photosurface",
+            "icon": "/usr/share/doc/qt/examples/quick/demos/photosurface/doc/images/qtquick-demo-photosurface-small.png"
+        }
+    ]
+}

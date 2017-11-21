@@ -1,17 +1,50 @@
+#include <QtCore/QDebug>
 #include <QtCore/QUrl>
 
 #include <QtGui/QGuiApplication>
 #include <QtQml/QQmlApplicationEngine>
+#include <QtQml/QQmlContext>
+
+#include <QtCore/QCommandLineOption>
+#include <QtCore/QCommandLineParser>
 
 #include "ApplicationManager.h"
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     QGuiApplication app{argc, argv};
+    QGuiApplication::setApplicationName("ahs-compositor");
+    QGuiApplication::setApplicationVersion("0.1");
 
-    qmlRegisterType<ApplicationManager>("ahs.Compositor.ApplicationManager", 1, 0, "ApplicationManager");
+    QCommandLineParser parser;
+    parser.addHelpOption();
 
-    QQmlApplicationEngine appEngine(QUrl("qrc:///qml/main.qml"));
+    QCommandLineOption configFile{
+        QStringList() << "c"
+                      << "configFile",
+        QCoreApplication::translate("main", "config file path"),
+        QCoreApplication::translate("main", "config")};
+    parser.addOption(configFile);
+
+    parser.process(app);
+
+    const QString configFilePath = parser.value(configFile);
+
+    qDebug() << "Config file = " << configFilePath;
+
+    qmlRegisterType<ApplicationManager>("ahs.Compositor.ApplicationManager", 1,
+                                        0, "ApplicationManager");
+
+    QQmlApplicationEngine appEngine;
+    ApplicationManager appManager;
+    if (!configFilePath.isEmpty()) {
+        appManager.setConfigFile(configFilePath);
+    }
+
+    appEngine.rootContext()->setContextProperty("appManager", &appManager);
+    appEngine.rootContext()->setContextProperty(
+        "registeredApplications",
+        QVariant::fromValue(appManager.registeredApplications()));
+    appEngine.load(QUrl("qrc:///qml/main.qml"));
 
     return app.exec();
 }

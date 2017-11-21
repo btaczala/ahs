@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>images/background.jpg</file>
+        <file>images/particle.png</file>
         <file>qml/main.qml</file>
         <file>qml/Screen.qml</file>
         <file>qml/SurfaceItem.qml</file>
@@ -8,5 +9,8 @@
         <file>qml/TopPanel.qml</file>
         <file>qml/Keyboard.qml</file>
         <file>qml/HomeScreen.qml</file>
+        <file>qml/background/BackgroundSwirls.qml</file>
+        <file>qml/images/home.png</file>
+        <file>qml/background/Swirl.qml</file>
     </qresource>
 </RCC>

@@ -25,6 +25,10 @@ WaylandOutput {
             TopPanel {
                 Layout.preferredWidth: parent.width
                 Layout.preferredHeight: 50
+
+                onHomeRequested: {
+                    stackView.pop();
+                }
             }
 
             StackView {
