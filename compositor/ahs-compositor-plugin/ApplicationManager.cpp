@@ -44,8 +44,7 @@ void ApplicationManager::setConfigFile(const QString &file) {
     auto rootObject = json.object();
 
     for (const auto &o : rootObject["applications"].toArray()) {
-        auto currentObject = o.toObject();
-
+        const auto currentObject = o.toObject();
         _registeredApplications.append(new ApplicationEntry{currentObject});
     }
 }
