@@ -1,0 +1,10 @@
+{
+    "applications": [
+        {
+            "name": "Google calendar", 
+            "exec": "ahs-calendar", 
+            "dir": "calendar/", 
+            "icon": "/usr/share/doc/qt/examples/quick/demos/clocks/doc/images/qtquick-demo-clocks-small.png"
+        }
+    ]
+}
