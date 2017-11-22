@@ -1,6 +1,7 @@
 #include "ApplicationManager.h"
 #include "ApplicationEntry.h"
 
+#include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
@@ -12,7 +13,16 @@ ApplicationManager::ApplicationManager(QObject *parent /**/) {}
 
 bool ApplicationManager::launchApplication(const QString &exec,
                                            const QString &directory) {
-    const QString path = QString("%1/%2").arg(directory).arg(exec);
+    const QDir execDir{directory};
+    QString path;
+
+    if (execDir.isAbsolute()) {
+        path = QString("%1/%2").arg(directory).arg(exec);
+    } else {
+        QDir p = QDir::current();
+        p.cd(directory);
+        path = QString("%1/%2").arg(p.path()).arg(exec);
+    }
 
     qDebug() << "Launching application " << path;
     return QProcess::startDetached(path, QStringList() << "-platform"
