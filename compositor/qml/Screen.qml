@@ -15,43 +15,84 @@ WaylandOutput {
     property alias stack: stackView
 
     window: Window {
+        id: rootWindow
         width: 1024
         height: 768
         visible: true
 
-        ColumnLayout {
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.right: parent.right
-            anchors.bottom: inputPanel.top
-            spacing: 2
+        Item {
+            id: container
+            state: "notification_hidden"
+            anchors.fill: parent
+            ColumnLayout {
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.right: parent.right
+                anchors.bottom: inputPanel.top
+                spacing: 2
 
-            TopPanel {
-                Layout.preferredWidth: parent.width
-                Layout.preferredHeight: 50
+                TopPanel {
+                    Layout.preferredWidth: parent.width
+                    Layout.preferredHeight: 50
 
-                onHomeRequested: {
-                    stackView.pop();
+                    onHomeRequested: {
+                        stackView.pop();
+                    }
+                }
+
+                StackView {
+                    id: stackView
+                    Layout.preferredWidth: parent.width
+                    Layout.fillHeight: true
+                    Layout.preferredHeight: 50
+                    initialItem: HomeScreen {
+                        width: 300
+                        height: 400
+                    } // HomeScreen
+                } // StackView
+            } // ColumnLayout
+
+            InputPanel {
+                id: inputPanel
+                y: Qt.inputMethod.visible ? parent.height - inputPanel.height : parent.height
+                anchors.left: parent.left
+                anchors.right: parent.right
+            }
+
+            Notifications {
+                id: notificationItem
+                width: parent.width - 200
+                height: 200
+                anchors.horizontalCenter: parent.horizontalCenter
+                blurItem: container
+                blur: false
+            }
+
+            Connections {
+                target: controller
+                onNotification: {
+                    console.debug("Notification");
+                    container.state = "notification_shown"
+                }
+                onCloseNotification: {
+                    container.state = "notification_hidden"
                 }
             }
 
-            StackView {
-                id: stackView
-                Layout.preferredWidth: parent.width
-                Layout.fillHeight: true
-                Layout.preferredHeight: 50
-                initialItem: HomeScreen {
-                    width: 300
-                    height: 400
+            states: [ 
+                State {
+                    name: "notification_shown"
+                    AnchorChanges { target: notificationItem; anchors.top: container.top; anchors.bottom: undefined }
+                }, 
+                State {
+                    name: "notification_hidden"
+                    AnchorChanges { target: notificationItem; anchors.bottom: container.top }
                 }
+            ]
+            transitions: Transition {
+            // smoothly reanchor myRect and move into new position
+                AnchorAnimation { duration: 300 }
             }
-        }
-
-        InputPanel {
-            id: inputPanel
-            y: Qt.inputMethod.visible ? parent.height - inputPanel.height : parent.height
-            anchors.left: parent.left
-            anchors.right: parent.right
-        }
-    }
+        } // Item { container }
+    } // Window
 }

@@ -11,6 +11,12 @@
 
 ApplicationManager::ApplicationManager(QObject *parent /**/) {}
 
+ApplicationManager::~ApplicationManager() {
+    for (const auto &process : _processes) {
+        process->terminate();
+    }
+}
+
 bool ApplicationManager::launchApplication(const QString &exec,
                                            const QString &directory) {
     const QDir execDir{directory};
@@ -25,8 +31,19 @@ bool ApplicationManager::launchApplication(const QString &exec,
     }
 
     qDebug() << "Launching application " << path;
-    return QProcess::startDetached(path, QStringList() << "-platform"
-                                                       << "wayland");
+
+    auto process = std::make_unique<QProcess>();
+
+    QObject::connect(process.get(), &QProcess::stateChanged, this,
+                     [](auto state) { qDebug() << "Process state " << state; });
+
+    process->setProgram(path);
+    process->setArguments(QStringList() << "-platform"
+                                        << "wayland");
+    process->start();
+    _processes.push_back(std::move(process));
+
+    return (*(_processes.end() - 1))->state() == QProcess::Running;
 }
 
 QObjectList ApplicationManager::registeredApplications() const noexcept {
@@ -57,4 +74,12 @@ void ApplicationManager::setConfigFile(const QString &file) {
         const auto currentObject = o.toObject();
         _registeredApplications.append(new ApplicationEntry{currentObject});
     }
+}
+
+void ApplicationManager::closeCurrentApp() {
+    if (_currentProcess) {
+        _currentProcess->terminate();
+    }
+
+    _currentProcess.reset();
 }

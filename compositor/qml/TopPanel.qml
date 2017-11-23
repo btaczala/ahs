@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.4
+import QtQuick.Controls 2.2
 
 Rectangle {
     id: rectangle
@@ -29,7 +30,13 @@ Rectangle {
         }
     }
 
-    TextField {
-        placeholderText: qsTr("Enter name")
+    Button {
+        anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
+        text: "Close"
+
+        onClicked: {
+            controller.sendDummyNotification();
+        }
     }
 }

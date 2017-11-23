@@ -61,18 +61,18 @@ WaylandCompositor {
         }
     }
 
-    //XdgShellV5 {
-        //property variant viewsBySurface: ({})
-        //onXdgSurfaceCreated: {
-            //var item = chromeComponent.createObject(defaultOutput.surfaceArea, { "shellSurface": xdgSurface } );
-            //viewsBySurface[xdgSurface.surface] = item;
-        //}
-        //onXdgPopupCreated: {
-            //var parentView = viewsBySurface[xdgPopup.parentSurface];
-            //var item = chromeComponent.createObject(parentView, { "shellSurface": xdgPopup } );
-            //viewsBySurface[xdgPopup.surface] = item;
-        //}
-    //}
+    XdgShellV5 {
+        property variant viewsBySurface: ({})
+        onXdgSurfaceCreated: {
+            var item = chromeComponent.createObject(defaultOutput.surfaceArea, { "shellSurface": xdgSurface } );
+            viewsBySurface[xdgSurface.surface] = item;
+        }
+        onXdgPopupCreated: {
+            var parentView = viewsBySurface[xdgPopup.parentSurface];
+            var item = chromeComponent.createObject(parentView, { "shellSurface": xdgPopup } );
+            viewsBySurface[xdgPopup.surface] = item;
+        }
+    }
 
     TextInputManager {
     }

@@ -9,6 +9,7 @@
 #include <QtCore/QCommandLineParser>
 
 #include "ApplicationManager.h"
+#include "Controller.h"
 
 int main(int argc, char *argv[]) {
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
@@ -38,10 +39,12 @@ int main(int argc, char *argv[]) {
 
     QQmlApplicationEngine appEngine;
     ApplicationManager appManager;
+    Controller ctrl;
     if (!configFilePath.isEmpty()) {
         appManager.setConfigFile(configFilePath);
     }
 
+    appEngine.rootContext()->setContextProperty("controller", &ctrl);
     appEngine.rootContext()->setContextProperty("appManager", &appManager);
     appEngine.rootContext()->setContextProperty(
         "registeredApplications",
