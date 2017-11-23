@@ -1,0 +1,3 @@
+[submodule "weather"]
+	path = weather
+	url = git@github.com:w0land/cumulus-qt.git

@@ -5,6 +5,12 @@
             "exec": "ahs-calendar", 
             "dir": "calendar/", 
             "icon": "/usr/share/doc/qt/examples/quick/demos/clocks/doc/images/qtquick-demo-clocks-small.png"
+        },
+        {
+            "name": "Cumulus Weather", 
+            "exec": "cumulus-qt", 
+            "dir": "weather/", 
+            "icon": "/home/bata/Projects/ahs/cumulus-qt/icons/hicolor/512x512/temperature_icon.png"
         }
     ]
 }

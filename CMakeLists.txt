@@ -9,3 +9,5 @@ find_package(Qt5WebKit)
 if(Qt5WebKit_FOUND)
     add_subdirectory(calendar)
 endif()
+
+add_subdirectory(weather)
